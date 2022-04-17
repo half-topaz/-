@@ -13,11 +13,6 @@ int main()
 	PrintStack(ps);
 	StackPop(ps);
 	StackPop(ps);
-	StackPop(ps);
-	StackPop(ps);
-	StackPop(ps);
-	StackPop(ps);
-	StackPop(ps);
 	PrintStack(ps);
 	StackPush(ps, 6);
 	StackPush(ps, 7);
@@ -146,4 +141,261 @@ int main()
 //        free(s);
 //    }
 //    obj->tail1 = NULL;
+//}
+
+
+//leetcode232.用栈实现队列
+//typedef struct Stack
+//{
+//    int* a;
+//    int size;
+//    int capacity;
+//}Stack;
+//
+//typedef struct
+//{
+//    Stack* S1;
+//    Stack* S2;
+//} MyQueue;
+//
+//Stack* StackCreate()
+//{
+//    Stack* newStack = (Stack*)malloc(sizeof(Stack));
+//    newStack->a = NULL;
+//    newStack->size = newStack->capacity = 0;
+//    return newStack;
+//}
+//
+//MyQueue* myQueueCreate()
+//{
+//    MyQueue* newQueue = (MyQueue*)malloc(sizeof(MyQueue));
+//    newQueue->S1 = StackCreate();
+//    newQueue->S2 = StackCreate();
+//    return newQueue;
+//}
+//
+//void myQueuePush(MyQueue* obj, int x)
+//{
+//    assert(obj);
+//    assert(obj->S1 && obj->S2);
+//    if (obj->S1->capacity == obj->S1->size)
+//    {
+//        int newcapacity = obj->S1->capacity;
+//        newcapacity = newcapacity == 0 ? 5 : newcapacity * 2;
+//        obj->S1->a = (int*)realloc(obj->S1->a, sizeof(int) * newcapacity);
+//        if (obj->S1->a == NULL)
+//        {
+//            printf("realloc fail\n");
+//            exit(-1);
+//        }
+//        obj->S1->capacity = newcapacity;
+//    }
+//    obj->S1->a[obj->S1->size++] = x;
+//}
+//
+//int myQueuePop(MyQueue* obj)
+//{
+//    assert(obj);
+//    assert(obj->S1 && obj->S2);
+//    if (obj->S1->size > 0 && obj->S2->size == 0)
+//    {
+//        while (obj->S1->size > 0)
+//        {
+//            if (obj->S2->capacity == obj->S2->size)
+//            {
+//                int newcapacity = obj->S2->capacity;
+//                newcapacity = newcapacity == 0 ? 5 : newcapacity * 2;
+//                obj->S2->a = (int*)realloc(obj->S2->a, sizeof(int) * newcapacity);
+//                if (obj->S2->a == NULL)
+//                {
+//                    printf("realloc fail\n");
+//                    exit(-1);
+//                }
+//                obj->S2->capacity = newcapacity;
+//            }
+//            obj->S2->a[obj->S2->size++] = obj->S1->a[--obj->S1->size];
+//        }
+//    }
+//    return obj->S2->a[--obj->S2->size];
+//}
+//
+//int myQueuePeek(MyQueue* obj)
+//{
+//    assert(obj);
+//    assert(obj->S1 && obj->S2);
+//    if (obj->S2->size == 0)
+//    {
+//        return obj->S1->a[0];
+//    }
+//    else
+//    {
+//        return obj->S2->a[obj->S2->size - 1];
+//    }
+//}
+//
+//bool myQueueEmpty(MyQueue* obj)
+//{
+//    assert(obj);
+//    assert(obj->S1 && obj->S2);
+//    if (obj->S1->size == 0 && obj->S2->size == 0)
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//void myQueueFree(MyQueue* obj)
+//{
+//    assert(obj);
+//	  assert(obj->S1&& obj->S2);
+//	  free(obj->S1->a);
+//	  free(obj->S2->a);
+//	  free(obj->S1);
+//	  free(obj->S2);
+//	  free(obj);
+//}
+
+
+//leetcode622. 设计循环队列
+//typedef struct Qnode
+//{
+//    int data;
+//    struct Qnode* front;
+//    struct Qnode* next;
+//}Qnode;
+//
+//typedef struct
+//{
+//    int capacity;
+//    int size;
+//    Qnode* head;
+//    Qnode* tail;
+//} MyCircularQueue;
+//
+//
+//MyCircularQueue* myCircularQueueCreate(int k)
+//{
+//    MyCircularQueue* newQueue = (MyCircularQueue*)malloc(sizeof(MyCircularQueue));
+//    newQueue->capacity = k;
+//    newQueue->size = 0;
+//    newQueue->head = NULL;
+//    newQueue->tail = NULL;
+//    return newQueue;
+//}
+//
+//bool myCircularQueueEnQueue(MyCircularQueue* obj, int value)
+//{
+//    assert(obj);
+//    if (obj->size < obj->capacity)
+//    {
+//        Qnode* newNode = (Qnode*)malloc(sizeof(Qnode));
+//        newNode->data = value;
+//        if (obj->head == NULL)
+//        {
+//            newNode->front = newNode->next = newNode;
+//            obj->head = obj->tail = newNode;
+//        }
+//        else
+//        {
+//            newNode->front = obj->tail;
+//            newNode->next = obj->head;
+//            obj->tail->next = newNode;
+//            obj->head->front = newNode;
+//            obj->tail = newNode;
+//        }
+//        obj->size++;
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//bool myCircularQueueDeQueue(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    if (obj->size > 1)
+//    {
+//        Qnode* sz = obj->head;
+//        obj->head = obj->head->next;
+//        obj->head->front = obj->tail;
+//        obj->tail->next = obj->head;
+//        free(sz);
+//        obj->size--;
+//        return true;
+//    }
+//    else if (obj->size == 1)
+//    {
+//        free(obj->head);
+//        obj->head = NULL;
+//        obj->tail = NULL;
+//        obj->size--;
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//int myCircularQueueFront(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    if (obj->size == 0)
+//    {
+//        return -1;
+//    }
+//    else
+//    {
+//        return obj->head->data;
+//    }
+//}
+//
+//int myCircularQueueRear(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    if (obj->size == 0)
+//    {
+//        return -1;
+//    }
+//    else
+//    {
+//        return obj->tail->data;
+//    }
+//}
+//
+//bool myCircularQueueIsEmpty(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    if (obj->size == 0)
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//bool myCircularQueueIsFull(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    if (obj->size == obj->capacity)
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return false;
+//    }
+//}
+//
+//void myCircularQueueFree(MyCircularQueue* obj)
+//{
+//    assert(obj);
+//    while (myCircularQueueDeQueue(obj));
 //}
