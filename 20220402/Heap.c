@@ -1,12 +1,60 @@
 #include "Heap.h"
 
 
-
+//数据交换
 void SwapData(HPDataType* child, HPDataType* parent)
 {
 	HPDataType sz = *child;
 	*child = *parent;
 	*parent = sz;
+}
+
+//向上调整
+void Dataup(int* a ,int site )
+{
+	int child = site;
+	int parent = (site - 1) / 2;
+	while (child)
+	{
+		if (a[child] < a[parent])//建立小堆
+		//if (a[child] > a[parent])建立大堆
+		{
+			SwapData(&a[child], &a[parent]);
+			child = parent;
+			parent = (parent - 1) / 2;
+		}
+		else
+		{
+			break;
+		}
+	}
+}
+
+//向下调整
+void DataDown(int* a, int site, int size)
+{
+	int parent = site;
+	int child = site * 2 + 1;
+	while (child <= size-1)
+	{
+		if ( child + 1 < size && a[child] > a[child + 1] )//建立小堆时，选左右子数中小的
+		//if ( child + 1 < size && a[child] < a[child + 1] )//建立大堆时，选左右子数中大的
+		{
+			child++;
+		}
+
+		if (a[child] < a[parent])//建立小堆
+		//if (a[child] > a[parent])建立大堆
+		{
+			SwapData(&a[child], &a[parent]);
+			parent = child;
+			child = parent * 2 + 1;
+		}
+		else
+		{
+			break;
+		}
+	}
 }
 
 // 堆的构建
@@ -16,6 +64,7 @@ void HeapInit(Heap* hp)
 	hp->a = NULL;
 	hp->capacity = hp->size = 0;
 }
+
 // 堆的销毁
 void HeapDestory(Heap* hp)
 {
@@ -41,27 +90,18 @@ void HeapPush(Heap* hp, HPDataType x)
 		hp->capacity = newcapacity;
 	}
 	hp->a[hp->size] = x;
-	int child = hp->size;
-	int parent = (hp->size - 1) / 2;
-
-	while (child)
-	{
-		if (hp->a[child] > hp->a[parent])
-		{
-			SwapData(&hp->a[child], &hp->a[parent]);
-			child = parent;
-			parent = (parent - 1) / 2;
-		}
-		else
-		{
-			break;
-		}
-	}
+	
+	Dataup(hp->a, hp->size);
+	
 	hp->size++;
 }
 // 堆的删除
 void HeapPop(Heap* hp)
 {
+	assert(hp);
+	SwapData(&hp->a[0], &hp->a[hp->size - 1]);
+	hp->size--;
+	DataDown(hp->a, 0, hp->size);
 }
 
 // 取堆顶的数据
@@ -85,13 +125,14 @@ int HeapEmpty(Heap* hp)
 	return hp->size == 0;
 }
 
+// 堆的打印
 void PrintHeap(Heap* hp)
 {
 	assert(hp);
 	int i = 0;
 	while (i < hp->size)
 	{
-		printf("%d ", hp->a[i++]);
+		printf("%3d ", hp->a[i++]);
 	}
 	printf("\n");
 }
@@ -101,7 +142,35 @@ void PrintHeap(Heap* hp)
 // 找最大的前K个，建立K个数的小堆
 // 找最小的前K个，建立K个数的大堆
 void PrintTopK(int* a, int n, int k)
-{}
+{
+	assert(a);
+	int* hp = (int*)malloc(sizeof(int)*10);
+	int i = 0;
+	while (i < k)
+	{
+		hp[i] = a[i];
+		i++;
+	}
+	for (int j = (k - 1 - 1) / 2;j >= 0;j--)
+	{
+		DataDown(hp, j, k);
+	}
+	while (i < n)
+	{
+		if (a[i] > hp[0])
+		{
+			hp[0] = a[i];
+			DataDown(hp, 0, k);
+		}
+		i++;
+	}
+	for (i = 0;i < k;i++)
+	{
+		printf("%3d ", hp[i]);
+	}
+	printf("\n");
+	free(hp);
+}
 
 void TestTopk()
 {}

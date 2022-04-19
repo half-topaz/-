@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 
 typedef int HPDataType;
@@ -13,6 +14,14 @@ typedef struct Heap
 	int capacity;
 }Heap;
 
+
+
+//数据交换
+void SwapData(HPDataType* child, HPDataType* parent);
+//向上调整
+void Dataup(int* a, int site);
+//向下调整
+void DataDown(int* a, int site, int size);
 // 堆的构建
 void HeapInit(Heap* hp);
 // 堆的销毁
