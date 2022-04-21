@@ -21,10 +21,16 @@
     <ClCompile Include="BTree.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Queue.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BTree.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
